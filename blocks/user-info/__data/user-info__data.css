@@ -1,0 +1,40 @@
+@keyframes fancyBtn {
+	0% {
+		color: #fff;
+		background-color: #000;  
+	}
+	100% {
+		color: #000;
+		background-color: #fff;
+		border-radius: 5px;  
+	}
+}
+
+.user-info__data {
+  max-width: 364px;
+  margin-left: 36px;
+}
+
+.user-info__edit-btn {
+	cursor: pointer;
+	margin-top: 25px;
+	height: 18px;
+	width: 38px;
+	font-size: 12px;
+	line-height: 15px;
+	font-family: Inter;
+	color: white;
+	border: 1px solid #fff;
+	background-color: #000; 
+}
+
+.user-info__edit-btn:hover {
+	animation: fancyBtn 0.5s 1 linear forwards;
+}
+
+@media screen and (max-width: 980px) {
+  .user-info__data {
+    margin: 20px 0;
+    text-align: center;
+  }
+}
