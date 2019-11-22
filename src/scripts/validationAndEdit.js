@@ -1,3 +1,7 @@
+import {api, serverUrl} from "./api.js";//api
+import {name, aboutMe, popEdit} from "./popup.js";
+import {editForm, editName, editAboutMe, saveAboutMe} from "./script.js";
+
 /// Validation ///
 const langRu = { 
   validationLenght: 'Должно быть от 2 до 30 символов',

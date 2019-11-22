@@ -49,4 +49,4 @@ const editBtn = profile.querySelector('.user-info__edit-btn');
 const popEdit = document.querySelector('.popup__for-edit');
 const popEditOpenClose = new Popup(popEdit, editBtn, true);
 
-export {Popup};
+export {Popup, name, aboutMe, popEdit};

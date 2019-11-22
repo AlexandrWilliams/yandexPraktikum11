@@ -78,7 +78,6 @@ const saveAboutMe = document.querySelector('.popup__button');
 
 // ///edit form elements///
 const editForm = document.forms.edit;
-
 const editName = editForm.elements.name;
 const editAboutMe = editForm.elements.about;
 
@@ -100,3 +99,5 @@ saveAboutMe.setAttribute('style', 'font-size: 18px;');
 editForm.addEventListener('input', activeBtn)
 
 saveAboutMe.addEventListener('click', profileEditorHandler);
+
+export {/*for validator.js*/editForm, editName, editAboutMe, saveAboutMe, /*for card.js*/buildContent, form, nameOfUrl, src, pop};

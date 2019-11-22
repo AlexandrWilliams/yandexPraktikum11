@@ -1,3 +1,5 @@
+import {buildContent, form, nameOfUrl, src, pop} from "./script.js";
+
 //card Creator//
 class Card {
   constructor(cardInfo) {
