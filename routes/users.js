@@ -1,26 +1,11 @@
-const path = require('path');
-const fs = require('fs');
-const users = require('../data/users.json');
+const router = require('express').Router();
 
-const routerUsers = (req, res) => {
-      res.send(users);
-};
+const {routerUsers, userId, createUser, updateUser, updateUserAvatar} = require('../controllers/users');
 
-const userId = (req, res) => {
-  const {id} = req.params;
+router.get('/', routerUsers);
+router.get('/:id', userId);
+router.post('/', createUser);
+router.patch('/me', updateUser);
+router.patch('/me/avatar', updateUserAvatar);
 
-  let user = users.find(item => item._id == id);
-
-  if (user == undefined) {
-    res.send({error: `No users ${id}`});
-    return
-  }
-
-  res.send(user);
-}
-
-
-module.exports = {
-  routerUsers,
-  userId
-};
+module.exports = router;
