@@ -17,29 +17,32 @@ const createCard = (req, res) => {
 };
 
 const deleteCard = (req, res) => {
-	card.findByIdAndRemove(req.params.id)
-		.then(card => res.send({data: card, message: 'File been deleted'}))
-			.catch(() => res.status(500).send({message: '500 Error'}))
+  const {id} = req.params;
+  card.findByIdAndRemove(id)
+    .then((e) =>{(e === null)?res.status(404).send({message: '404 Error'}):res.send({data: e})})
+      .catch(()=>res.status(500).send({message: '500 Error'}))
 };
+  
+		
 
-const cardLike = (req, res) => {
-  card.findByIdAndUpdate(
-    req.params.cardId,
-    { $addToSet: { likes: req.user._id } }, // добавить _id в массив, если его там нет
-    { new: true },)
-};
+// const cardLike = (req, res) => {
+//   card.findByIdAndUpdate(
+//     req.params.cardId,
+//     { $addToSet: { likes: req.user._id } }, // добавить _id в массив, если его там нет
+//     { new: true },)
+// };
 
-const cardDisLike = (req, res) => {
-  card.findByIdAndUpdate(
-    req.params.cardId,
-    { $pull: { likes: req.user._id } }, // убрать _id из массива
-    { new: true },)
-};
+// const cardDisLike = (req, res) => {
+//   card.findByIdAndUpdate(
+//     req.params.cardId,
+//     { $pull: { likes: req.user._id } }, // убрать _id из массива
+//     { new: true },)
+// };
 
 module.exports = {
 	routerCards,
 	createCard,
-	deleteCard,
-  cardLike,
-  cardDisLike
+	deleteCard,  
+  // cardLike,
+  // cardDisLike
 };
