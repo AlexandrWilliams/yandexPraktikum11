@@ -13,7 +13,7 @@ const createCard = (req, res) => {
   const { name, link } = req.body;
   card.create({ name, link, owner: req.user._id })
     .then(card => res.send({ data: card }))
-      .catch(() => res.status(500).send({ message: '500 Error' }));
+      .catch(() => res.status(500).send({ message: '500 Data did not pass validation!' }));
 };
 
 const deleteCard = (req, res) => {
@@ -28,7 +28,7 @@ const cardLike = (req, res) => {
     req.params.cardId,
     { $addToSet: { likes: req.user._id } }, // добавить _id в массив, если его там нет
     { new: true },)
-    .then((e)=>{res.send({data: e})})
+    .then((e) =>{(e === null)?res.status(404).send({message: '404 Error'}):res.send({data: e})})
       .catch((e)=>{res.status(500).send({message: '500 Error'})});
 };
 
@@ -37,7 +37,7 @@ const cardDisLike = (req, res) => {
     req.params.cardId,
     { $pull: { likes: req.user._id } }, // убрать _id из массива
     { new: true },)
-    .then((e)=>{res.send({data: e})})
+    .then((e) =>{(e === null)?res.status(404).send({message: '404 Error'}):res.send({data: e})})
       .catch((e)=>{res.status(500).send({message: '500 Error'})});
 };
 

@@ -20,7 +20,7 @@ const userSchema = new mongoose.Schema({
 })
 
 userSchema.path('avatar').validate((val) => {
-    urlRegex = /(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-/]))?/;
+    urlRegex = /^(https?|ftp):\/\/(w{3}\.)?(((\d{1,3}\.){3}\d{1,3})|([a-zA-Z-_\d]{2,}(\.[a-zA-Z]{2,})+)+)(:\d{2,5})?(([a-zA-Z-\/_\d]{2,})?#?)?.\w{3}$/;
     return urlRegex.test(val);
 }, 'Invalid URL.');
 

@@ -9,7 +9,7 @@ const routerUsers = (req, res) => {
 const userId = (req, res) => {
   const {id} =  req.params;
   user.findById(id) 
-    .then(user => res.send({ data: user }))
+    .then(user => {(user === null)?res.status(404).send({message: '404 Error'}):res.send({data: user})})
       .catch(() => res.status(404).send({ message: '404 Error' }));
 };
 
@@ -31,7 +31,7 @@ const updateUser = (req, res) => {
         runValidators: true
     }
    )
-    .then(user => res.send({data: user, message: 'data been updated'}))
+    .then((user) => {(user === null)?res.status(404).send({message: '404 cannot find user!'}):res.send({data: user, message: 'data been updated'})})
       .catch(() => res.status(404).send({ message: '500 Error' }));
 };
 
