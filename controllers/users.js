@@ -1,51 +1,49 @@
 const user = require('../models/user');
 
 const routerUsers = (req, res) => {
-    user.find({}) 
-      .then(user => res.send({ data: user }))
-        .catch(() => res.status(500).send({ message: '500 Error' }));
+  user.find({})
+    .then((e) => res.send({ data: e }))
+    .catch(() => res.status(500).send({ message: '500 Error' }));
 };
 
 const userId = (req, res) => {
-  const {id} =  req.params;
-  user.findById(id) 
-    .then(user => {(user === null)?res.status(404).send({message: '404 Error'}):res.send({data: user})})
-      .catch(() => res.status(404).send({ message: '404 Error' }));
+  const { id } = req.params;
+  user.findById(id)
+    .then((e) => { (e === null) ? res.status(404).send({ message: '404 Error' }) : res.send({ data: e }); })
+    .catch(() => res.status(404).send({ message: '404 Error' }));
 };
 
 const createUser = (req, res) => {
   const { name, about, avatar } = req.body;
   user.create({ name, about, avatar })
-    .then(user => res.send({ data: user }))
-      .catch(() => res.status(500).send({ message: '500 Error' }));
+    .then((e) => res.send({ data: e }))
+    .catch(() => res.status(500).send({ message: '500 Error' }));
 };
 
 const updateUser = (req, res) => {
-  const name = req.body.name;
-  const about = req.body.about;
-  //res.send(req.user._id)
+  const { name } = req.body;
+  const { about } = req.body;
+  // res.send(req.user._id)
   user.findByIdAndUpdate(req.user._id,
-   {name: name, about: about},
-   {
-        new: true,
-        runValidators: true
-    }
-   )
-    .then((user) => {(user === null)?res.status(404).send({message: '404 cannot find user!'}):res.send({data: user, message: 'data been updated'})})
-      .catch(() => res.status(404).send({ message: '500 Error' }));
+    { name, about },
+    {
+      new: true,
+      runValidators: true,
+    })
+    .then((e) => { (e === null) ? res.status(404).send({ message: '404 cannot find!' }) : res.send({ data: e, message: 'data been updated' }); })
+    .catch(() => res.status(404).send({ message: '404 Error' }));
 };
 
 const updateUserAvatar = (req, res) => {
-  const avatar = req.body.avatar;
+  const { avatar } = req.body;
   user.findByIdAndUpdate(req.user._id,
-    {avatar: avatar},
+    { avatar },
     {
-        new: true,
-        runValidators: true
-    }
-  )
-    .then(user => res.send({data: user, message: 'data been updated'}))
-      .catch(() => res.status(500).send({ message: '500 Error' }));
+      new: true,
+      runValidators: true,
+    })
+    .then((e) => res.send({ data: e, message: 'data been updated' }))
+    .catch(() => res.status(500).send({ message: '500 Error' }));
 };
 
 module.exports = {
@@ -53,5 +51,5 @@ module.exports = {
   userId,
   createUser,
   updateUser,
-  updateUserAvatar
+  updateUserAvatar,
 };
