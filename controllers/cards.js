@@ -17,8 +17,16 @@ const createCard = (req, res) => {
 
 const deleteCard = (req, res) => {
   const { id } = req.params;
-  card.findByIdAndRemove(id)
-    .then((e) => { (e === null) ? res.status(404).send({ message: '404 Error' }) : res.send({ data: e }); })
+  card.findById(id)
+    .then((e) => {
+      if (id === e.owner) {
+        card.findByIdAndRemove(id)
+          .then((e) => { (e === null) ? res.status(404).send({ message: '404 Error' }) : res.send({ data: e }); })
+          .catch(() => res.status(500).send({ message: '500 Error' }));
+      } else {
+        res.status(406).send({ message: '406 Error' });
+      }
+    })
     .catch(() => res.status(500).send({ message: '500 Error' }));
 };
 
