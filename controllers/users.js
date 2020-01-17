@@ -11,7 +11,13 @@ const routerUsers = (req, res) => {
 const userId = (req, res) => {
   const { id } = req.params;
   user.findById(id)
-    .then((e) => { (e === null) ? res.status(404).send({ message: '404 Error' }) : res.send({ data: e }); })
+    .then((e) => {
+      if (e === null) {
+        res.status(404).send({ message: '404 Error' });
+      } else {
+        res.send({ data: e });
+      }
+    })
     .catch(() => res.status(404).send({ message: '404 Error' }));
 };
 
@@ -19,11 +25,20 @@ const createUser = (req, res) => {
   const {
     name, about, avatar, email, password,
   } = req.body;
-  bcrypt.hash(password, 10)
-    .then((hash) => user.create({
-      name, about, avatar, email, password: hash,
-    }))
-    .then((e) => res.send({ data: e }))
+  user.find({ email })
+    .then((elem) => {
+      if (elem.length === 0) {
+        bcrypt.hash(password, 10)
+          .then((hash) => user.create({
+            name, about, avatar, email, password: hash,
+          }))
+          .then((e) => res.send({
+            _id: e._id, name: e.name, about: e.about, avtar: e.avatar, email: e.email,
+          }))
+          .catch(() => res.status(500).send({ message: '500 Error' }));
+      }
+      res.status(456).send({ message: '456 Error' });
+    })
     .catch(() => res.status(500).send({ message: '500 Error' }));
 };
 
@@ -37,7 +52,13 @@ const updateUser = (req, res) => {
       new: true,
       runValidators: true,
     })
-    .then((e) => { (e === null) ? res.status(404).send({ message: '404 cannot find!' }) : res.send({ data: e, message: 'data been updated' }); })
+    .then((e) => {
+      if (e === null) {
+        res.status(404).send({ message: '404 cannot find!' });
+      } else {
+        res.send({ data: e, message: 'data been updated' });
+      }
+    })
     .catch(() => res.status(404).send({ message: '404 Error' }));
 };
 
@@ -56,8 +77,8 @@ const loginUser = (req, res) => {
   const { email, password } = req.body;
 
   return user.findUserByCredentials(email, password)
-    .then((user) => {
-      const token = jwt.sign({ _id: user._id }, 'key', { expiresIn: '7d' });
+    .then((e) => {
+      const token = jwt.sign({ _id: e._id }, 'key', { expiresIn: '7d' });
       res.cookie('jwt', token, {
         maxAge: 3600000 * 24 * 7,
         httpOnly: true,
