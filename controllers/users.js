@@ -36,8 +36,9 @@ const createUser = (req, res) => {
             _id: e._id, name: e.name, about: e.about, avtar: e.avatar, email: e.email,
           }))
           .catch(() => res.status(500).send({ message: '500 Error' }));
+        return;
       }
-      res.status(456).send({ message: '456 Error' });
+      res.status(409)send({ message: '409 Error' });
     })
     .catch(() => res.status(500).send({ message: '500 Error' }));
 };

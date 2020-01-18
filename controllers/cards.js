@@ -16,7 +16,7 @@ const createCard = (req, res) => {
 
 const deleteCard = (req, res) => {
   const { id } = req.params;
-  const { userId } = req.user;
+  const { _id: userId } = req.user;
   card.findById(id)
     .then((e) => {
       if (userId === e.owner) {
