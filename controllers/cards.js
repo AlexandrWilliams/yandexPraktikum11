@@ -19,10 +19,10 @@ const deleteCard = (req, res) => {
   const { _id: userId } = req.user;
   card.findById(id)
     .then((e) => {
-      if (userId === e.owner) {
-        card.remove(id)
+      if (e.owner.equals(userId)) {
+        card.remove(e)
           .then(() => { res.send({ data: e, message: 'been removed' }); })
-          .catch(() => res.status(500).send({ message: '500 Error' }));
+          .catch((err) => res.status(500).send({ message: `500 Error${err}` }));
       } else {
         res.status(403).send({ message: '403 Error' });
       }
