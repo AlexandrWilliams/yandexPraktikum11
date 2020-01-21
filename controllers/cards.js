@@ -7,8 +7,7 @@ const routerCards = (req, res) => {
 };
 
 const createCard = (req, res) => {
-  console.log(req.user._id); // _id станет доступен
-
+  // console.log(req.user._id); // _id станет доступен
   const { name, link } = req.body;
   card.create({ name, link, owner: req.user._id })
     .then((e) => res.send({ data: e }))
@@ -17,9 +16,18 @@ const createCard = (req, res) => {
 
 const deleteCard = (req, res) => {
   const { id } = req.params;
-  card.findByIdAndRemove(id)
-    .then((e) => { (e === null) ? res.status(404).send({ message: '404 Error' }) : res.send({ data: e }); })
-    .catch(() => res.status(500).send({ message: '500 Error' }));
+  const { _id: userId } = req.user;
+  card.findById(id)
+    .then((e) => {
+      if (e.owner.equals(userId)) {
+        card.remove(e)
+          .then(() => { res.send({ data: e, message: 'been removed' }); })
+          .catch((err) => res.status(500).send({ message: `500 Error${err}` }));
+      } else {
+        res.status(403).send({ message: '403 Error' });
+      }
+    })
+    .catch(() => res.status(404).send({ message: '404 Error' }));
 };
 
 const cardLike = (req, res) => {
@@ -28,7 +36,13 @@ const cardLike = (req, res) => {
     { $addToSet: { likes: req.user._id } }, // добавить _id в массив, если его там нет
     { new: true },
   )
-    .then((e) => { (e === null) ? res.status(404).send({ message: '404 Error' }) : res.send({ data: e }); })
+    .then((e) => {
+      if (e === null) {
+        res.status(404).send({ message: '404 Error' });
+      } else {
+        res.send({ data: e });
+      }
+    })
     .catch(() => { res.status(500).send({ message: '500 Error' }); });
 };
 
@@ -38,7 +52,13 @@ const cardDisLike = (req, res) => {
     { $pull: { likes: req.user._id } }, // убрать _id из массива
     { new: true },
   )
-    .then((e) => { (e === null) ? res.status(404).send({ message: '404 Error' }) : res.send({ data: e }); })
+    .then((e) => {
+      if (e === null) {
+        res.status(404).send({ message: '404 Error' });
+      } else {
+        res.send({ data: e });
+      }
+    })
     .catch(() => { res.status(500).send({ message: '500 Error' }); });
 };
 

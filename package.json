@@ -4,7 +4,7 @@
   "description": "YP homework",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon app.js --open",
+    "start": "app.js --open",
     "dev": "cross-env NODE_ENV=development nodemon app.js development --open --watch"
   },
   "repository": {
@@ -27,9 +27,13 @@
     "webpack-cli": "^3.3.10"
   },
   "dependencies": {
+    "bcryptjs": "^2.4.3",
     "body-parser": "^1.19.0",
+    "cookie-parser": "^1.4.4",
     "eslint-plugin-import": "^2.18.2",
     "express": "^4.17.1",
-    "mongoose": "^5.8.1"
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^5.8.1",
+    "validator": "^12.1.0"
   }
 }
