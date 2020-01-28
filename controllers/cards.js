@@ -1,36 +1,52 @@
+//controllers/cards.js
 const card = require('../models/card');
+const fourHundredError = require('../errors/four-hundred-err');
 
-const routerCards = (req, res) => {
+const routerCards = (req, res, next) => {
   card.find({})
-    .then((e) => res.send({ data: e }))
-    .catch(() => res.status(500).send({ message: '500 Error' }));
+    .then((e) => {
+      if(!e) {
+        throw new fourHundredError('Card Not Found', 404)
+      }
+      res.send({ data: e })
+    })
+    .catch(next);
 };
 
-const createCard = (req, res) => {
+const createCard = (req, res, next) => {
   // console.log(req.user._id); // _id станет доступен
   const { name, link } = req.body;
   card.create({ name, link, owner: req.user._id })
-    .then((e) => res.send({ data: e }))
-    .catch(() => res.status(400).send({ message: '400 Error' }));
+    .then((e) => {
+      if(!e) {
+        throw new fourHundredError('400 Error', 400)
+      }
+      res.send({ data: e })
+    })
+    .catch(next);
 };
 
-const deleteCard = (req, res) => {
+const deleteCard = (req, res, next) => {
   const { id } = req.params;
   const { _id: userId } = req.user;
   card.findById(id)
     .then((e) => {
+      if(!e) {
+        throw new fourHundredError('404 Error', 404)
+      }
       if (e.owner.equals(userId)) {
         card.remove(e)
-          .then(() => { res.send({ data: e, message: 'been removed' }); })
-          .catch((err) => res.status(500).send({ message: `500 Error${err}` }));
+          .then(() => {
+            res.send({ data: e, message: 'been removed' }); })
+          .catch(next);
       } else {
-        res.status(403).send({ message: '403 Error' });
+        throw new fourHundredError('403 Error', 403);
       }
     })
-    .catch(() => res.status(404).send({ message: '404 Error' }));
+    .catch(next);
 };
 
-const cardLike = (req, res) => {
+const cardLike = (req, res, next) => {
   card.findByIdAndUpdate(
     req.params.cardId,
     { $addToSet: { likes: req.user._id } }, // добавить _id в массив, если его там нет
@@ -38,15 +54,15 @@ const cardLike = (req, res) => {
   )
     .then((e) => {
       if (e === null) {
-        res.status(404).send({ message: '404 Error' });
+        throw new fourHundredError('404 Error', 404);
       } else {
         res.send({ data: e });
       }
     })
-    .catch(() => { res.status(500).send({ message: '500 Error' }); });
+    .catch(next);
 };
 
-const cardDisLike = (req, res) => {
+const cardDisLike = (req, res, next) => {
   card.findByIdAndUpdate(
     req.params.cardId,
     { $pull: { likes: req.user._id } }, // убрать _id из массива
@@ -54,12 +70,12 @@ const cardDisLike = (req, res) => {
   )
     .then((e) => {
       if (e === null) {
-        res.status(404).send({ message: '404 Error' });
+        throw new fourHundredError('404 Error', 404);
       } else {
         res.send({ data: e });
       }
     })
-    .catch(() => { res.status(500).send({ message: '500 Error' }); });
+    .catch(next);
 };
 
 module.exports = {
