@@ -1,5 +1,5 @@
 // app.js
-cnode onst express = require('express');
+const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
@@ -11,7 +11,7 @@ const { errors } = require('celebrate');
 //winston blue
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 
-const { PORT = 80 } = process.env;//3000
+const { PORT = 80 } = process.env;
 const app = express();
 
 mongoose.connect('mongodb://localhost:27017/mestodb', {
