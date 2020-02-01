@@ -4,6 +4,7 @@ const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const auth = require('./middlewares/auth');
+require('dotenv').config();
 const { loginUser, createUser } = require('./controllers/users');
 //celebrate and joi
 const { celebrate, Joi } = require('celebrate');

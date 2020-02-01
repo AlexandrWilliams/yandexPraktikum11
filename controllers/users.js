@@ -33,7 +33,7 @@ const createUser = (req, res, next) => {
   } = req.body;
   user.find({ email })
     .then((elem) => {
-      if(!elem) {
+      if(elem) {
         throw new fourHundredError('409 Error', 409);
       }
       if (elem.length === 0) {
@@ -87,12 +87,14 @@ const updateUserAvatar = (req, res, next) => {
 const loginUser = (req, res, next) => {
   const { email, password } = req.body;
 
+  const { NODE_ENV, JWT_SECRET } = process.env;
+
   return user.findUserByCredentials(email, password)
     .then((e) => {
       if (!e) {
         throw new fourHundredError('401 Error', 401);
       }
-      const token = jwt.sign({ _id: e._id }, 'key', { expiresIn: '7d' });
+      const token = jwt.sign({ _id: e._id }, NODE_ENV === 'production' ? JWT_SECRET : 'dev-secret', { expiresIn: '7d' });
       res.cookie('jwt', token, {
         maxAge: 3600000 * 24 * 7,
         httpOnly: true,
