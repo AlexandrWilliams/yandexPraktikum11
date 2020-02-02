@@ -1,14 +1,14 @@
-//controllers/cards.js
-const card = require('../models/card');
-const fourHundredError = require('../errors/four-hundred-err');
+// controllers/cards.js
+const Card = require('../models/card');
+const FourHundredError = require('../errors/four-hundred-err');
 
 const routerCards = (req, res, next) => {
-  card.find({})
+  Card.find({})
     .then((e) => {
-      if(!e) {
-        throw new fourHundredError('Card Not Found', 404)
+      if (!e) {
+        throw new FourHundredError('Card Not Found', 404);
       }
-      res.send({ data: e })
+      res.send({ data: e });
     })
     .catch(next);
 };
@@ -16,12 +16,12 @@ const routerCards = (req, res, next) => {
 const createCard = (req, res, next) => {
   // console.log(req.user._id); // _id станет доступен
   const { name, link } = req.body;
-  card.create({ name, link, owner: req.user._id })
+  Card.create({ name, link, owner: req.user._id })
     .then((e) => {
-      if(!e) {
-        throw new fourHundredError('400 Error', 400)
+      if (!e) {
+        throw new FourHundredError('400 Error', 400);
       }
-      res.send({ data: e })
+      res.send({ data: e });
     })
     .catch(next);
 };
@@ -29,32 +29,33 @@ const createCard = (req, res, next) => {
 const deleteCard = (req, res, next) => {
   const { id } = req.params;
   const { _id: userId } = req.user;
-  card.findById(id)
+  Card.findById(id)
     .then((e) => {
-      if(!e) {
-        throw new fourHundredError('404 Error', 404)
+      if (!e) {
+        throw new FourHundredError('404 Error', 404);
       }
       if (e.owner.equals(userId)) {
-        card.remove(e)
+        Card.remove(e)
           .then(() => {
-            res.send({ data: e, message: 'been removed' }); })
+            res.send({ data: e, message: 'been removed' });
+          })
           .catch(next);
       } else {
-        throw new fourHundredError('403 Error', 403);
+        throw new FourHundredError('403 Error', 403);
       }
     })
     .catch(next);
 };
 
 const cardLike = (req, res, next) => {
-  card.findByIdAndUpdate(
+  Card.findByIdAndUpdate(
     req.params.cardId,
     { $addToSet: { likes: req.user._id } }, // добавить _id в массив, если его там нет
     { new: true },
   )
     .then((e) => {
       if (e === null) {
-        throw new fourHundredError('404 Error', 404);
+        throw new FourHundredError('404 Error', 404);
       } else {
         res.send({ data: e });
       }
@@ -63,14 +64,14 @@ const cardLike = (req, res, next) => {
 };
 
 const cardDisLike = (req, res, next) => {
-  card.findByIdAndUpdate(
+  Card.findByIdAndUpdate(
     req.params.cardId,
     { $pull: { likes: req.user._id } }, // убрать _id из массива
     { new: true },
   )
     .then((e) => {
       if (e === null) {
-        throw new fourHundredError('404 Error', 404);
+        throw new FourHundredError('404 Error', 404);
       } else {
         res.send({ data: e });
       }

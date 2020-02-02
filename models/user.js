@@ -1,4 +1,4 @@
-//models/user.js
+// models/user.js
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 const validator = require('validator');
@@ -55,7 +55,7 @@ userSchema.path('avatar').validate((val) => {
 }, 'Invalid URL.');
 userSchema.path('email').validate((val) => validator.isEmail(val), 'Invalid Email.');
 
-module.exports = mongoose.model('user', userSchema);
+module.exports = mongoose.model('User', userSchema);
 
 // {"name": "syzuki",
 // "about": "gsxr 750",

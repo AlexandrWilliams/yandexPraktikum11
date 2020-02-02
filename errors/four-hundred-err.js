@@ -1,9 +1,9 @@
 // errors/four-hundred-err.js
-class fourHundredError extends Error {
-    constructor(message, statusCode) {
-        super(message);
-        this.statusCode = statusCode;
-    }
+class FourHundredError extends Error {
+  constructor(message, statusCode) {
+    super(message);
+    this.statusCode = statusCode;
+  }
 }
 
-module.exports = fourHundredError;
+module.exports = FourHundredError;
