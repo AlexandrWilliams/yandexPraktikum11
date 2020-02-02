@@ -34,7 +34,7 @@ const createUser = (req, res, next) => {
   } = req.body;
   User.find({ email })
     .then((elem) => {
-      if (!elem) {
+      if (elem.length > 0) {
         throw new FourHundredError('409 Error', 409);
       }
       if (elem.length === 0) {
