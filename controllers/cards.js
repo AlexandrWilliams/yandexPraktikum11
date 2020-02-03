@@ -19,7 +19,7 @@ const createCard = (req, res, next) => {
   Card.create({ name, link, owner: req.user._id })
     .then((e) => {
       if (!e) {
-        throw new FourHundredError('400 Error', 400);
+        throw new FourHundredError('400 Error incorrect data, ', 400);
       }
       res.send({ data: e });
     })
@@ -41,7 +41,7 @@ const deleteCard = (req, res, next) => {
           })
           .catch(next);
       } else {
-        throw new FourHundredError('403 Error', 403);
+        throw new FourHundredError('403 access not allowed', 403);
       }
     })
     .catch(next);

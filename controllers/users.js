@@ -35,7 +35,7 @@ const createUser = (req, res, next) => {
   User.find({ email })
     .then((elem) => {
       if (elem.length > 0) {
-        throw new FourHundredError('409 Error', 409);
+        throw new FourHundredError('409 user with same data already been signup', 409);
       }
       if (elem.length === 0) {
         bcrypt.hash(password, 10)
@@ -92,7 +92,7 @@ const loginUser = (req, res, next) => {
   return User.findUserByCredentials(email, password)
     .then((e) => {
       if (!e) {
-        throw new FourHundredError('401 Error', 401);
+        throw new FourHundredError('401 Cant find user', 401);
       }
       const token = jwt.sign({ _id: e._id }, NODE_ENV === 'production' ? JWT_SECRET : 'dev-secret', { expiresIn: '7d' });
       res.cookie('jwt', token, {
