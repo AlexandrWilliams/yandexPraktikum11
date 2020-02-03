@@ -1,7 +1,7 @@
-# yandexPraktikum
+# YandexPraktikum
 # name Alexander Williams
-# version under beta*
-# ynadex homework
-# homework
-# https://alexanderwilliams.us/
-# JS, CSS, HTML, WebPack, GIT, NodeJS
+# version underBeta
+# Yandex homework
+# API https://api.alexanderwilliams.us/
+# Front End https://alexanderwilliams.us/
+# JS, CSS, HTML, WebPack, GIT, NodeJS, MongoDB
