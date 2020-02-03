@@ -13,6 +13,8 @@ const { loginUser, createUser } = require('./controllers/users');
 const auth = require('./middlewares/auth');
 // winston blue
 const { requestLogger, errorLogger } = require('./middlewares/logger');
+// url val
+const urlValidate = require('./errors/urlValidate');
 
 const { PORT = 3000 } = process.env;
 const app = express();
@@ -40,8 +42,8 @@ app.get('/crash-test', () => {
 app.post('/signup', celebrate({
   body: Joi.object().keys({
     name: Joi.string().required().min(2).max(30),
-    about: Joi.string().min(2).max(30),
-    avatar: Joi.string().required(),
+    about: Joi.string().min(2).max(30).required(),
+    avatar: Joi.string().required().regex(urlValidate),
     email: Joi.string().required().email(),
     password: Joi.string().required().min(8),
   }),

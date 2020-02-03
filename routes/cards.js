@@ -1,6 +1,8 @@
 // routes/cards.js
 const router = require('express').Router();
 const { celebrate, Joi } = require('celebrate');
+// url val
+const urlValidate = require('../errors/urlValidate');
 
 const {
   routerCards, createCard, deleteCard, cardLike, cardDisLike,
@@ -10,7 +12,7 @@ router.get('/', routerCards);
 router.post('/', celebrate({
   body: Joi.object().keys({
     name: Joi.string().required().min(2).max(30),
-    link: Joi.string().required(),
+    link: Joi.string().required().regex(urlValidate),
   }),
 }), createCard);
 router.delete('/:id', celebrate({
@@ -20,12 +22,12 @@ router.delete('/:id', celebrate({
 }), deleteCard);
 router.put('/:cardId/likes', celebrate({
   params: Joi.object().keys({
-    id: Joi.string().alphanum().length(24),
+    cardId: Joi.string().alphanum().length(24),
   }),
 }), cardLike);
 router.delete('/:cardId/likes', celebrate({
   params: Joi.object().keys({
-    id: Joi.string().alphanum().length(24),
+    cardId: Joi.string().alphanum().length(24),
   }),
 }), cardDisLike);
 
