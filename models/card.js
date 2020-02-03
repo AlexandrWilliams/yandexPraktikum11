@@ -29,8 +29,10 @@ const cardSchema = new mongoose.Schema({
 });
 
 cardSchema.path('link').validate((val) => {
-  const urlRegex = /^(https?|ftp):\/\/(w{3}\.)?(((\d{1,3}\.){3}\d{1,3})|([a-zA-Z-_\d]{2,}(\.[a-zA-Z]{2,})+)+)(:\d{2,5})?(([a-zA-Z-/_\d]{2,})?#?)?.\w{3}$/;
+  const urlRegex = /^(http(s?):|ftp:)([/|.|\w|\s|-])*\.(?:jpg|gif|png)$/g;
   return urlRegex.test(val);
 }, 'Invalid URL.');
 
 module.exports = mongoose.model('Card', cardSchema);
+// ^(https?|ftp):\/\/(w{3}\.)?(((\d{1,3}\.){3}\d{1,3})|([a-zA-Z-_\d]{2,}(\.[a-zA-Z]{2,})+)+)
+// (:\d{2,5})?(([a-zA-Z-/_\d]{2,})?#?)?.\w{3}$
