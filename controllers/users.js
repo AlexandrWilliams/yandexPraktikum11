@@ -94,7 +94,8 @@ const loginUser = (req, res, next) => {
       if (!e) {
         throw new FourHundredError('401 Cant find user', 401);
       }
-      const token = jwt.sign({ _id: e._id }, NODE_ENV === 'production' ? JWT_SECRET : 'dev-secret', { expiresIn: '7d' });
+      const jwtKey = NODE_ENV === 'production' ? JWT_SECRET : 'dev-secret';
+      const token = jwt.sign({ _id: e._id }, jwtKey, { expiresIn: '7d' });
       res.cookie('jwt', token, {
         maxAge: 3600000 * 24 * 7,
         httpOnly: true,
