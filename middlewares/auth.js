@@ -1,5 +1,6 @@
 // middlewares/auth.js
 const jwt = require('jsonwebtoken');
+const FourHundredError = require('../errors/four-hundred-err');
 
 const { NODE_ENV, JWT_SECRET } = process.env;
 
@@ -8,16 +9,17 @@ module.exports = (req, res, next) => {
   const token = req.cookies.jwt;
 
   if (!token) {
-    return res.status(401).send({ message: 'Необходима авторизация' });
+    throw new FourHundredError('401 Необходима авторизация', 401);
   }
   let payload;
 
   try {
     payload = jwt.verify(token, NODE_ENV === 'production' ? JWT_SECRET : 'dev-secret');
+    if (!payload) {
+      throw new FourHundredError('401 Необходима авторизация', 401);
+    }
   } catch (err) {
-    return res
-      .status(401)
-      .send({ message: 'Необходима авторизация' });
+    return next();
   }
   req.user = payload;
   return next();
