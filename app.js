@@ -16,7 +16,8 @@ const { requestLogger, errorLogger } = require('./middlewares/logger');
 // url val
 const urlValidate = require('./errors/urlValidate');
 
-const { PORT = 3000 } = process.env;
+const { PORT = 3000 } = process.env;//3000
+
 const app = express();
 
 mongoose.connect('mongodb://localhost:27017/mestodb', {
