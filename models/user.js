@@ -1,4 +1,4 @@
-//models/user.js
+// models/user.js
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 const validator = require('validator');
@@ -50,12 +50,12 @@ userSchema.statics.findUserByCredentials = function (email, password) {
 };
 
 userSchema.path('avatar').validate((val) => {
-  const urlRegex = /^(https?|ftp):\/\/(w{3}\.)?(((\d{1,3}\.){3}\d{1,3})|([a-zA-Z-_\d]{2,}(\.[a-zA-Z]{2,})+)+)(:\d{2,5})?(([a-zA-Z-/_\d]{2,})?#?)?.\w{3}$/;
+  const urlRegex = /^(http(s?):|ftp:)([/|.|\w|\s|-])*\.(?:jpg|gif|png)$/g;
   return urlRegex.test(val);
 }, 'Invalid URL.');
 userSchema.path('email').validate((val) => validator.isEmail(val), 'Invalid Email.');
 
-module.exports = mongoose.model('user', userSchema);
+module.exports = mongoose.model('User', userSchema);
 
 // {"name": "syzuki",
 // "about": "gsxr 750",
@@ -63,3 +63,4 @@ module.exports = mongoose.model('user', userSchema);
 // "email": "blabla@gmail.com",
 // "password": "1234567890"
 // }
+// (http(s?):|ftp:)([/|.|\w|\s|-])*\.(?:jpg|gif|png)
