@@ -41,7 +41,7 @@
     "cookie-parser": "^1.4.4",
     "eslint-plugin-import": "^2.18.2",
     "express": "^4.17.1",
-    "jsonwebtoken": "^8.5.1",
+    "jsonwebtoken": "^9.0.0",
     "mongoose": "^5.8.1",
     "validator": "^12.1.0",
     "winston": "^3.2.1"
